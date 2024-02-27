@@ -1,7 +1,7 @@
 CREATE TABLE users (
     id INTEGER PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    publications_count INTEGER NOT NULL
+    publications_count INTEGER DEFAULT 0
 );
 
 COPY users (id,name,publications_count) FROM '/var/lib/db_data/users.csv' DELIMITER ',' CSV HEADER;
