@@ -25,12 +25,13 @@ COPY course_completing (id,uid,cid,status) FROM '/var/lib/db_data/course_complet
 
 CREATE TABLE stages (
     id INTEGER PRIMARY KEY,
+    cid INTEGER REFERENCES courses(id),
     name VARCHAR(255) NOT NULL,
     type VARCHAR(255) NOT NULL, /* 0 - Webinar, 1 - Test, 2 - Document */
     duration INTERVAL DEFAULT '0 second'
 );
 
-COPY stages (id,name,type,duration) FROM '/var/lib/db_data/stages.csv' DELIMITER ',' CSV HEADER;
+COPY stages (id,cid,name,type,duration) FROM '/var/lib/db_data/stages.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE stage_course_completing (
     sid INTEGER REFERENCES stages(id),
