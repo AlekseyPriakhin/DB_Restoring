@@ -3,7 +3,7 @@ CREATE TABLE users (
     name VARCHAR(255) NOT NULL
 );
 
-COPY users (id,name) FROM '/var/lib/db_data/users.csv' DELIMITER ',' CSV HEADER;
+COPY users (id,name) FROM '/etc/postgresql/init-script/users.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE courses (
     id INTEGER PRIMARY KEY,
@@ -11,7 +11,7 @@ CREATE TABLE courses (
     stages_count INTEGER NOT NULL
 );
 
-COPY courses (id,name,stages_count) FROM '/var/lib/db_data/courses.csv' DELIMITER ',' CSV HEADER;
+COPY courses (id,name,stages_count) FROM '/etc/postgresql/init-script/courses.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE course_completing (
     id INTEGER PRIMARY KEY,
@@ -20,7 +20,7 @@ CREATE TABLE course_completing (
     status INTEGER DEFAULT 0 /* 0 - Progress, 1 - Completed, 2 - Failed */    
 );
 
-COPY course_completing (id,uid,cid,status) FROM '/var/lib/db_data/course_completing.csv' DELIMITER ',' CSV HEADER;
+COPY course_completing (id,uid,cid,status) FROM '/etc/postgresql/init-script/course_completing.csv' DELIMITER ',' CSV HEADER;
 
 
 CREATE TABLE stages (
@@ -31,7 +31,7 @@ CREATE TABLE stages (
     duration INTERVAL DEFAULT '0 second'
 );
 
-COPY stages (id,cid,name,type,duration) FROM '/var/lib/db_data/stages.csv' DELIMITER ',' CSV HEADER;
+COPY stages (id,cid,name,type,duration) FROM '/etc/postgresql/init-script/stages.csv' DELIMITER ',' CSV HEADER;
 
 CREATE TABLE stage_course_completing (
     sid INTEGER REFERENCES stages(id),
@@ -40,4 +40,4 @@ CREATE TABLE stage_course_completing (
     progress INTEGER DEFAULT 0
 );
 
-COPY stage_course_completing (sid,cid,progress) FROM '/var/lib/db_data/stage_course_completing.csv' DELIMITER ',' CSV HEADER;
+COPY stage_course_completing (sid,cid,progress) FROM '/etc/postgresql/init-script/stage_course_completing.csv' DELIMITER ',' CSV HEADER;

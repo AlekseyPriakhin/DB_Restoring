@@ -1,15 +1,35 @@
 version: '3.8'
 
 services:
-  db:
+  postgres_master:
+    container_name: postgres_master
     image: postgres:latest
+    restart: always
     environment:
-      POSTGRES_DB: "db1"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-      PGDATA: "/var/lib/postgresql/data/pgdata"
+      - POSTGRES_DB=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./db_data/:/var/lib/db_data
-      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - ./data:/var/lib/postgresql/data1
+      - ./init-script/createdb.sql:/docker-entrypoint-initdb.d/createdb.sql
+      - ./data-slave:/var/lib/postgresql/data-slave
+      - ./init-script:/etc/postgresql/init-script
+      - ./init-script/config/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - ./init-script/config/postgres.conf:/etc/postgresql/postgresql.conf
     ports:
       - "5432:5432"
+
+  postgres_slave:
+    container_name: postgres_slave
+    image: postgres:latest
+    restart: always
+    volumes:
+      - ./data-slave:/var/lib/postgresql/data1
+      - ./init-script/config/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - ./init-script/config/postgres.conf:/etc/postgresql/postgresql.conf
+    ports:
+      - "5434:5432"
+    environment:
+      - POSTGRES_DB=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
