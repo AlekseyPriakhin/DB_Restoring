@@ -10,7 +10,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./data:/var/lib/postgresql/data1
+      - ./data:/var/lib/postgresql/data
       - ./init-script/createdb.sql:/docker-entrypoint-initdb.d/createdb.sql
       - ./data-slave:/var/lib/postgresql/data-slave
       - ./init-script:/etc/postgresql/init-script
@@ -24,7 +24,7 @@ services:
     image: postgres:latest
     restart: always
     volumes:
-      - ./data-slave:/var/lib/postgresql/data1
+      - ./data-slave:/var/lib/postgresql/data
       - ./init-script/config/pg_hba.conf:/etc/postgresql/pg_hba.conf
       - ./init-script/config/postgres.conf:/etc/postgresql/postgresql.conf
     ports:
